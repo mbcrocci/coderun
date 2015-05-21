@@ -1,10 +1,10 @@
-# codeRun
+# coderun
 A single command to run any code file
 
 ## Setup
 
 ```bash
-go get github.com/mbcrocci/codeRun
+go get github.com/mbcrocci/coderun
 ```
 
 
