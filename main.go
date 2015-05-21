@@ -6,8 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-
-	"github.com/codegangsta/cli"
 )
 
 type CodeFile struct {
@@ -79,37 +77,33 @@ func (f *CodeFile) Run() error {
 	return nil
 }
 
-func compile(c *cli.Context) {
-	file := newCodeFile(c.Args().First())
-
-	if err := file.Compile(); err != nil {
-		fmt.Errorf("%v\n", err)
-	}
-}
-
-func run(c *cli.Context) {
-	file := newCodeFile(c.Args().First())
-
-	if err := file.Run(); err != nil {
-		fmt.Errorf("%v\n", err)
-	}
+func helpMessage() {
+	fmt.Println("coderun filename [option]")
+	fmt.Println("Options (optional):\n\tcompile\n\trun")
+	fmt.Println("It defaults to run")
 }
 
 func main() {
-	app := cli.NewApp()
-	app.Usage = "Compile and/or run your code files"
-	app.Commands = []cli.Command{
-		{
-			Name:      "compile",
-			ShortName: "c",
-			Usage:     "compiles a file",
-			Action:    compile,
-		},
-		{
-			Name:   "run",
-			Usage:  "Run a file/script, it compiles it if needed",
-			Action: run,
-		},
+	file := newCodeFile(os.Args[1])
+
+	if len(os.Args) > 2 {
+		switch os.Args[2] {
+		case "compile", "c", "-c", "--compile":
+			if err := file.Compile(); err != nil {
+				fmt.Errorf("%v\n", err)
+			}
+		case "run", "r", "-r", "--run", "":
+			if err := file.Run(); err != nil {
+				fmt.Errorf("%v\n", err)
+			}
+
+		default:
+			helpMessage()
+			os.Exit(1)
+		}
+	} else {
+		if err := file.Run(); err != nil {
+			fmt.Errorf("%v\n", err)
+		}
 	}
-	app.RunAndExitOnError()
 }
