@@ -27,6 +27,7 @@ func newCodeFile(filename string) CodeFile {
 	if f.extension != "" {
 		f.ftype = f.extension[1:]
 	}
+	return f
 }
 
 func (f *CodeFile) show() {
@@ -67,8 +68,8 @@ func (f *CodeFile) Run() error {
 		cmd = exec.Command("ruby", f.filename)
 
 	default:
-		return errors.New("Not a valid filetype!\n[Supported] bin, C",
-			+"Go, Python, Lua, Ruby")
+		return errors.New("Not a valid filetype!\n[Supported] bin, C" +
+			"Go, Python, Lua, Ruby")
 	}
 	cmd.Stdout, cmd.Stderr, cmd.Stdin = os.Stdout, os.Stderr, os.Stdin
 
@@ -102,7 +103,7 @@ func main() {
 			Name:      "compile",
 			ShortName: "c",
 			Usage:     "compiles a file",
-			Action, compile,
+			Action:    compile,
 		},
 		{
 			Name:   "run",
