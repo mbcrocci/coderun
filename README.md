@@ -5,8 +5,6 @@ A single command to run any code file
 
 ```bash
 go get github.com/mbcrocci/codeRun
-cd $GOPATH/github.com/mbcrocci/codeRun
-go install
 ```
 
 
