@@ -35,9 +35,19 @@ func (f *CodeFile) show() {
 
 func (f *CodeFile) Compile() error {
 	// (TODO): Support different filetype
-	// (TODO): Check operating system
+	var cmd *exec.Cmd
 
-	cmd := exec.Command("gcc", "-o", f.name, f.filename)
+	switch f.ftype {
+	case "c":
+		cmd = exec.Command("gcc", "-o", f.name, f.filename)
+
+	case "go":
+		cmd = exec.Command("go", "build", f.filename)
+
+	default:
+		return errors.New("Not a supported filetype!")
+	}
+
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 
 	if err := cmd.Run(); err != nil {
