@@ -15,6 +15,10 @@ type CodeFile struct {
 	ftype     string
 }
 
+// newCodefile returns a new CodeFile,
+// removes extension from filename,
+// removes name form filename,
+// and sets type from the extension
 func newCodeFile(filename string) CodeFile {
 	var f CodeFile
 
@@ -28,13 +32,15 @@ func newCodeFile(filename string) CodeFile {
 	return f
 }
 
+// Show printf the CodeFile fields for debug purposes
 func (f *CodeFile) show() {
 	fmt.Printf("[Filename]: %s\n[Name]: %s\n[Extension]: %s\n[Type]: %s\n",
 		f.filename, f.name, f.extension, f.ftype)
 }
 
+// Compile
+// Supports C and Go files
 func (f *CodeFile) Compile() error {
-	// (TODO): Support different filetype
 	var cmd *exec.Cmd
 
 	switch f.ftype {
@@ -56,6 +62,8 @@ func (f *CodeFile) Compile() error {
 	return nil
 }
 
+// Run the file/script
+// Supports C, Go, Python, Lua, Ruby
 func (f *CodeFile) Run() error {
 	var cmd *exec.Cmd
 
